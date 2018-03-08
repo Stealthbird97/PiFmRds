@@ -19,8 +19,8 @@ endif
 
 ifneq ($(TARGET), other)
 
-app: rds.o waveforms.o pi_fm_rds.o fm_mpx.o control_pipe.o mailbox.o
-	$(CC) -o pi_fm_rds rds.o waveforms.o mailbox.o pi_fm_rds.o fm_mpx.o control_pipe.o -lm -lsndfile
+app: rds.o waveforms.o pi_fm_rds.o fm_mpx.o control_pipe.o mailbox.o ../../librpitx.a
+	g++ -Wall -g -O3 -o pi_fm_rds rds.o waveforms.o pi_fm_rds.o fm_mpx.o control_pipe.o ../../librpitx.a -lm -lsndfile -lrt -lpthread -lliquid
 
 endif
 
@@ -40,8 +40,8 @@ waveforms.o: waveforms.c waveforms.h
 mailbox.o: mailbox.c mailbox.h
 	$(CC) $(CFLAGS) mailbox.c
 
-pi_fm_rds.o: pi_fm_rds.c control_pipe.h fm_mpx.h rds.h mailbox.h
-	$(CC) $(CFLAGS) pi_fm_rds.c
+pi_fm_rds.o: pi_fm_rds.cpp control_pipe.h fm_mpx.h rds.h 
+	g++ -Wall -c -g -O3 pi_fm_rds.cpp
 
 rds_wav.o: rds_wav.c
 	$(CC) $(CFLAGS) rds_wav.c
