@@ -1,5 +1,6 @@
 /*
  * PiFmRds - FM/RDS transmitter for the Raspberry Pi
+ * Copyright (C) 1028 Evariste Courjaud, F5OEO	
  * Copyright (C) 2014, 2015 Christophe Jacquet, F8FTK
  * Copyright (C) 2012, 2015 Richard Hirst
  * Copyright (C) 2012 Oliver Mattos and Oskar Weigl
@@ -111,7 +112,7 @@ extern "C"
 #include "control_pipe.h"
 }
 
-#include "../../ngfmdmasync.h"
+#include "librpitx/src/librpitx.h"
 
 ngfmdmasync *fmmod;
 // The deviation specifies how wide the signal is. 
@@ -119,15 +120,6 @@ ngfmdmasync *fmmod;
 // and about 2.5kHz for NBFM (walkie-talkie style radio)
 #define DEVIATION        75000
 
-
-
-static void
-udelay(int us)
-{
-    struct timespec ts = { 0, us * 1000 };
-
-    nanosleep(&ts, NULL);
-}
 
 static void
 terminate(int num)
@@ -274,7 +266,7 @@ int main(int argc, char **argv) {
     char *audio_file = NULL;
     char *control_pipe = NULL;
     uint32_t carrier_freq = 107900000;
-    char *ps = NULL;
+    char *ps = "Librpitx";
     char *rt = "PiFmRds: live FM-RDS transmission from the RaspberryPi";
     uint16_t pi = 0x1234;
     uint32_t mash = -1;

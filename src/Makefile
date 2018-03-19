@@ -19,8 +19,8 @@ endif
 
 ifneq ($(TARGET), other)
 
-app: rds.o waveforms.o pi_fm_rds.o fm_mpx.o control_pipe.o mailbox.o ../../librpitx.a
-	g++ -Wall -g -O3 -o pi_fm_rds rds.o waveforms.o pi_fm_rds.o fm_mpx.o control_pipe.o ../../librpitx.a -lm -lsndfile -lrt -lpthread -lliquid
+app: rds.o waveforms.o pi_fm_rds.o fm_mpx.o control_pipe.o mailbox.o librpitx/src/librpitx.a
+	g++ -Wall -g -O3 -o pi_fm_rds rds.o waveforms.o pi_fm_rds.o fm_mpx.o control_pipe.o librpitx/src/librpitx.a -lm -lsndfile -lrt -lpthread 
 
 endif
 
