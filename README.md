@@ -35,6 +35,10 @@ Clone the source repository and run `make` in the `src` directory:
 ```bash
 git clone https://github.com/ChristopheJacquet/PiFmRds.git
 cd PiFmRds/src
+git clone https://github.com/F5OEO/librpitx.git
+cd librpitx/src
+make
+cd ../../
 make clean
 make
 ```
@@ -192,7 +196,7 @@ The samples are played by `pi_fm_rds.c` that is adapted from Richard Hirst's [Pi
 
 
 ## History
-
+* 2018-03-19: Use librpitx for easy integration
 * 2015-09-05: support for the Raspberry Pi 2
 * 2014-11-01: support for toggling the Traffic Announcement (TA) flag at run-time
 * 2014-10-19: bugfix (cleanly stop the DMA engine when the specified file does not exist, or it's not possible to read from stdin)
