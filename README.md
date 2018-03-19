@@ -33,7 +33,7 @@ Pi-FM-RDS also depends on the Linux `rpi-mailbox` driver, so you need a recent L
 Clone the source repository and run `make` in the `src` directory:
 
 ```bash
-git clone https://github.com/ChristopheJacquet/PiFmRds.git
+git clone https://github.com/F5OEO/PiFmRds.git
 cd PiFmRds/src
 git clone https://github.com/F5OEO/librpitx.git
 cd librpitx/src
