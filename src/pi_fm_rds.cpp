@@ -119,7 +119,8 @@ ngfmdmasync *fmmod;
 // Use 75kHz for WBFM (broadcast radio) 
 // and about 2.5kHz for NBFM (walkie-talkie style radio)
 #define DEVIATION        75000
-
+//FOR NBFM
+//#define DEVIATION        2500 
 
 static void
 terminate(int num)
@@ -165,6 +166,7 @@ int tx(uint32_t carrier_freq, char *audio_file, uint16_t pi, char *ps, char *rt,
 
     // Data structures for baseband data
     float data[DATA_SIZE];
+	float devfreq[DATA_SIZE];
     int data_len = 0;
     int data_index = 0;
 
@@ -230,32 +232,18 @@ int tx(uint32_t carrier_freq, char *audio_file, uint16_t pi, char *ps, char *rt,
             varying_ps = 0;
         }
         
-        usleep(500);
-
-        
-	    int free_slots=fmmod->GetBufferAvailable();
-		
-        if (free_slots >= DATA_SIZE)
-		{
-			int Index=fmmod->GetUserMemIndex();
-            // get more baseband samples if necessary
-           
-                if( fm_mpx_get_samples(data) < 0 ) {
+			if( fm_mpx_get_samples(data) < 0 ) {
                     terminate(0);
                 }
                 data_len = DATA_SIZE;
-             
-            
-           
-			for(int i=0;i< data_len;i++)
+				for(int i=0;i< data_len;i++)
 			{
-            	float dval = data[i]*deviation_scale_factor;
-				//printf("%f\n",dval);
-				fmmod->SetFrequencySample(Index+i,dval);
+			
+            	devfreq[i] = data[i]*deviation_scale_factor;
+				
+				
             }	
-
-        }
-
+			fmmod->SetFrequencySamples(devfreq,data_len);
 	}    
 
     return 0;
@@ -286,8 +274,8 @@ int main(int argc, char **argv) {
         } else if(strcmp("-freq", arg)==0 && param != NULL) {
             i++;
             carrier_freq = 1e6 * atof(param);
-            if(carrier_freq < 76e6 || carrier_freq > 108e6)
-                fatal("Incorrect frequency specification. Must be in megahertz, of the form 107.9, between 76 and 108.\n");
+            //if(carrier_freq < 76e6 || carrier_freq > 108e6)
+              //  fatal("Incorrect frequency specification. Must be in megahertz, of the form 107.9, between 76 and 108.\n");
         } else if(strcmp("-pi", arg)==0 && param != NULL) {
             i++;
             pi = (uint16_t) strtol(param, NULL, 16);

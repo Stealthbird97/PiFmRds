@@ -118,6 +118,7 @@ int fm_mpx_open(char *filename, size_t len) {
     
         // Choose a cutoff frequency for the low-pass FIR filter
         float cutoff_freq = 15700;
+		//float cutoff_freq = 3000; //For NBFM
         if(in_samplerate/2 < cutoff_freq) cutoff_freq = in_samplerate/2 * .8;
    
 
@@ -236,6 +237,7 @@ int fm_mpx_get_samples(float *mpx_buffer) {
 	// Sanity checks
         if ( iphase < 0 ) {iphase=0; printf("low\n"); }// Seems to run faster with these checks in place
         if ( iphase >= FIR_PHASES ) {iphase=FIR_PHASES-2; printf("high\n"); }
+		
         if( channels > 1 )
         {
           for(int fi=0; fi<FIR_TAPS; fi++)  // fi = Filter Index
@@ -251,7 +253,7 @@ int fm_mpx_get_samples(float *mpx_buffer) {
             out_left+=low_pass_fir[iphase][fi] * fir_buffer_left[(fir_index-fi)&(FIR_TAPS-1)];
           }
         }
-
+		
         // Simple broadcast compressor
         // 
         // The goal is to get the loudest sounding audio while 
@@ -310,7 +312,7 @@ int fm_mpx_get_samples(float *mpx_buffer) {
         else
         {
             mpx_buffer[i] =  
-                mpx_buffer[i] +    // RDS data samples are currently in mpx_buffer
+                mpx_buffer[i] +    // RDS data samples are currently in mpx_buffer :to be Remove in NBFM
                 9.0*out_left;      // Unmodulated monophonic signal
         } 
             
